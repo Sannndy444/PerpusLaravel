@@ -12,7 +12,8 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        //
+        $publisher = Publisher::all();
+        return view('publishers.index', compact('publisher'));
     }
 
     /**
@@ -20,7 +21,7 @@ class PublisherController extends Controller
      */
     public function create()
     {
-        //
+        return view('publishers.create');
     }
 
     /**
@@ -28,7 +29,14 @@ class PublisherController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'publisher_name' => 'required'
+        ]);
+
+        Publisher::create($request->all());
+
+        return redirect()->route('publishers.index')
+                        ->with('succes', 'Publisher Added successfully');
     }
 
     /**
@@ -36,7 +44,7 @@ class PublisherController extends Controller
      */
     public function show(Publisher $publisher)
     {
-        //
+        return view('publishers.show', compact('publisher'));
     }
 
     /**
@@ -44,7 +52,7 @@ class PublisherController extends Controller
      */
     public function edit(Publisher $publisher)
     {
-        //
+        return view('publishers.edit', compact('publisher'));
     }
 
     /**
@@ -52,7 +60,14 @@ class PublisherController extends Controller
      */
     public function update(Request $request, Publisher $publisher)
     {
-        //
+        $request->validate([
+            'publisher_name' => 'required'
+        ]);
+
+        $publisher->update(all());
+
+        return redirect()->route('publisers.index')
+                        ->with('seucces', 'Publisher Updated succesfully');
     }
 
     /**
@@ -60,6 +75,9 @@ class PublisherController extends Controller
      */
     public function destroy(Publisher $publisher)
     {
-        //
+        $publisher->delete();
+
+        return redirect()->route('publisers.index')
+                        ->with('success', 'Publisher Deleted successfully');
     }
 }

@@ -36,7 +36,7 @@ class AuthorController extends Controller
         Author::create($request->all());
         
         return redirect()->route('authors.index')
-                        ->with('success', 'Author Added succesfully');
+                        ->with('success', 'Author Added successfully');
     }
 
     /**
@@ -61,13 +61,13 @@ class AuthorController extends Controller
     public function update(Request $request, Author $author)
     {
         $request->validate([
-            'author_name' => 'required '
+            'author_name' => 'required'
         ]);
 
         $author->update($request->all());
 
         return redirect()->route('authors.index')
-                        ->with('success', 'Author Updated succesfully');
+                        ->with('success', 'Author Updated successfully');
     }
 
     /**
@@ -78,6 +78,6 @@ class AuthorController extends Controller
         $author->delete();
 
         return redirect()->route('authors.index')
-                        ->with('success', 'Author Deleted succesfully');
+                        ->with('success', 'Author Deleted successfully');
     }
 }
