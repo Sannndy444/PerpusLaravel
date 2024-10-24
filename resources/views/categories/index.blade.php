@@ -12,7 +12,7 @@
     <h1>Category</h1>
     <a href="{{ route('categories.create') }}">Create New Category</a>
 
-    @if ($massage = Session::get('success'))
+    @if ($message = Session::get('success'))
         <div>{{ $message }}</div>
     @endif
 

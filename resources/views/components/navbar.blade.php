@@ -18,7 +18,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{{ route('authors.index') }}">Author</a></li>
                         <li><a class="dropdown-item" href="{{ route('categories.index') }}">Category</a></li>
-                        <li><a class="dropdown-item" href="#">Publisher</a></li>
+                        <li><a class="dropdown-item" href="{{ route('publishers.index') }}">Publisher</a></li>
                     </ul>
                 </li>
                 </ul>
