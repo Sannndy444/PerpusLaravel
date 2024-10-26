@@ -12,11 +12,21 @@
     <h1>Author</h1>
     <a href="{{ route('authors.create') }}">Create New Author</a>
 
-    @if ($message = Session::get('success'))
-        <div>{{ $message }}</div>
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
 
-    @foreach ($author as $author)
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    
 
 
     
@@ -31,6 +41,7 @@
             </tr>
         </thead>
         <tbody>
+            @foreach ($author as $author)
                 <tr>
                     <td>{{ $author->author_name }}</td>
                     <td>
@@ -42,8 +53,9 @@
                         </form>
                     </td>
                 </tr>
+            @endforeach
         </tbody>
     </table>
-    @endforeach
+
 </body>
 </html>

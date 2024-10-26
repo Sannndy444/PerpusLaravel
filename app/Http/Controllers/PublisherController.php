@@ -61,7 +61,7 @@ class PublisherController extends Controller
     public function update(Request $request, Publisher $publisher)
     {
         $request->validate([
-            'publisher_name' => 'required|string|max:255|unique:publishers,publisher_name' . $publisher->id
+            'publisher_name' => 'required|string|max:255|unique:publishers,publisher_name'
         ]);
 
         $publisher->update(all());
