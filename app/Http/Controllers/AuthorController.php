@@ -29,22 +29,18 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi data
         $request->validate([
             'author_name' => 'required|string|max:255'
         ]);
 
-        // Cek apakah data yang sama sudah ada
         $existingAuthor = Author::where('author_name', $request->author_name)->first();
 
-        if ($existingAuthor) {
-            // Jika duplikat ditemukan, kembalikan dengan pesan error
-            return redirect()->route('authors.index')
-                            ->withInput()
-                            ->with('error', 'Author already exists.');
-        }
+            if ($existingAuthor) {
+                return redirect()->route('authors.index')
+                                ->withInput()
+                                ->with('error', 'Author already exists.');
+            }
 
-        // Simpan data baru jika tidak ada duplikat
         Author::create($request->all());
 
         return redirect()->route('authors.index')
@@ -75,6 +71,16 @@ class AuthorController extends Controller
         $request->validate([
             'author_name' => 'required|string|max:255'
         ]);
+
+        // Cek apakah data yang sama sudah ada
+        $existingAuthor = Author::where('author_name', $request->author_name)->first();
+
+            if ($existingAuthor) {
+                // Jika duplikat ditemukan, kembalikan dengan pesan error
+                return redirect()->route('authors.index')
+                                ->withInput()
+                                ->with('error', 'Author already exists.');
+            }
 
         $author->update($request->all());
 

@@ -12,7 +12,7 @@
     <h1>Create Publisher</h1>
         <form action="{{ route('publishers.store') }}" method="POST">
             @csrf
-            <input type="text" name="publisher_name" placeholder="publisher Name">
+            <input type="text" name="publisher_name" placeholder="Publisher Name">
             <button type="submit">Submit</button>
         </form>
 </body>

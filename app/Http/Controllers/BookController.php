@@ -44,20 +44,28 @@ class BookController extends Controller
             'publishedYear' => 'required|string|max:255'
         ]);
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->extension();
-            $image->storeAs('books', $imageName, 'public');
-        }
+        $existingBook = Book::where('book_name', $request->book_name)->first();
 
-        Book:create([
-            'title' => $request->title,
-            'author_id' => $request->author_id,
-            'category_id' => $request->category_id,
-            'publisher_id' => $request->publisher_id,
-            'image' => $imageName,
-            'publishedYear' => $request->publishedYear,
-        ]);
+            if ($existingBook) {
+                return redirect()->route('books.index')
+                                ->withInput()
+                                ->with('error', 'Book already exist');
+            } else {
+                if ($request->hasFile('image')) {
+                    $image = $request->file('image');
+                    $imageName = time() . '.' . $image->extension();
+                    $image->storeAs('books', $imageName, 'public');
+                }
+
+                Book:create([
+                    'title' => $request->title,
+                    'author_id' => $request->author_id,
+                    'category_id' => $request->category_id,
+                    'publisher_id' => $request->publisher_id,
+                    'image' => $imageName,
+                    'publishedYear' => $request->publishedYear,
+                ]);
+            }
 
         return redirect()->route('books.index')
                         ->with('success', compact('Book Added successfully'));
@@ -93,26 +101,33 @@ class BookController extends Controller
             'publishedYear' => 'required|string|max:255'
         ]);
 
-        if ($request->hasFile('image')) {
-            if ($book->image && file_exists(storage_path('app/public/books/' . $book->image))) {
-            unlink(storage_path('app/public/books/' . $book->image));
+        $existingBook = Book::where('book_name', $request->book_name)->first();
+            if ($existingBook) {
+                return redirect()->route('books.index')
+                                ->withInput()
+                                ->with('error', 'Book already exist');
+            } else {
+                if ($request->hasFile('image')) {
+                    if ($book->image && file_exists(storage_path('app/public/books/' . $book->image))) {
+                    unlink(storage_path('app/public/books/' . $book->image));
+                    }
+
+                    $image = $request->file('image');
+                    $imageName = time() . '.' . $image->extension();
+                    $image->storeAs('books', $imageName, 'public');
+                } else {
+                    $imageName = $book->image;
+                }
+
+                $book->update([
+                    'title' => $request->title,
+                    'author_id' => $request->author_id,
+                    'category_id' => $request->category_id,
+                    'publisher_id' => $request->publisher_id,
+                    'image' => $imageName,
+                    'publishedYear' => $request->publishedYear,
+                ]);
             }
-
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->extension();
-            $image->storeAs('books', $imageName, 'public');
-        } else {
-            $imageName = $book->image;
-        }
-
-        $book->update([
-            'title' => $request->title,
-            'author_id' => $request->author_id,
-            'category_id' => $request->category_id,
-            'publisher_id' => $request->publisher_id,
-            'image' => $imageName,
-            'publishedYear' => $request->publishedYear,
-        ]);
 
         return redirect()->route('books.index')
                         ->with('success', 'Book Updated succesfulyy');

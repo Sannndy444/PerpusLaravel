@@ -30,8 +30,16 @@ class PublisherController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'publisher_name' => 'required|string|max:255|unique:publishers,publisher_name'
+            'publisher_name' => 'required|string|max:255'
+
         ]);
+
+        $existingPublisher = Publisher::where('publisher_name', $request->publisher_name)->first();
+            if ($existingPublisher) {
+                return redirect()->route('publishers.index')
+                                ->withInput()
+                                ->with('error', 'Publisher already exist');
+            }
 
         Publisher::create($request->all());
 
@@ -61,8 +69,15 @@ class PublisherController extends Controller
     public function update(Request $request, Publisher $publisher)
     {
         $request->validate([
-            'publisher_name' => 'required|string|max:255|unique:publishers,publisher_name'
+            'publisher_name' => 'required|string|max:255'
         ]);
+
+        $existingPublisher = Publisher::where('publisher_name', $request->publisher_name)->first();
+            if ($existingPublisher) {
+                return redirect()->route('publishers.index')
+                                ->withInput()
+                                ->with('error', 'Publisher already exist');
+            }
 
         $publisher->update(all());
 

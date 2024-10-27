@@ -8,6 +8,14 @@
 </head>
 <body>
     <x-navbar></x-navbar>
+
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <h1>Edit Author</h1>
         <form action="{{ route('authors.update', $author->id) }}" method="POST">
             @csrf
