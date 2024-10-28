@@ -24,26 +24,43 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             @foreach ($book as $book)
                 <div class="col">
-                    <div class="card">
+                    <div class="card" style="width: 100%; border-width: 1px;">
                         @if($book->image)
-                            <img src="{{ Storage::url('books/' . $book->image) }}" class="img-card-top" alt="{{ $book->image }}">
+                            <img src="{{ asset('storage/books/'.$book->image) }}" class="img-card-top" alt="{{ $book->image }}" style="height: 500px; object-fit: cover;">
                         @else
                             No Image
                         @endif
                             <div class="card-body">
-                                <h5 class="card-title">{{ $book->title }}</h5>
                                 <div class="row">
                                     <div class="col">
-                                        <button type="button" class="btn btn-primary">
+                                        <h5 class="card-title">{{ $book->title }}</h5>  
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="d-flex justify-content-center">
+                                        <button type="button" class="btn btn-primary me-2">
                                             <a class="text-decoration-none text-light" href="{{ route('books.show', $book->id) }}">View</a>
                                         </button>
+
                                         <form action="{{ route('books.destroy', $book->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                        
                                     </div>
                                 </div>
                                 

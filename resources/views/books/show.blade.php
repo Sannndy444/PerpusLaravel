@@ -14,7 +14,7 @@
     <div class="row">
         <!-- Gambar Buku -->
         <div class="col-md-4">
-            <img src="{{ Storage::url('books/' . $book->image) }}" alt="Gambar Buku" class="img-fluid rounded shadow">
+            <img src="{{ asset('storage/books/' . $book->image) }}" alt="Gambar Buku" class="img-fluid rounded shadow">
         </div>
         
         <!-- Informasi Buku -->
@@ -31,7 +31,7 @@
             </div>
 
             <div class="mt-4">
-                <a href="#" class="btn btn-primary">Pinjam Buku</a>
+                <a href="{{ route('books.edit', $book->id) }}" class="btn btn-primary">Edit Book</a>
                 <a href="#" class="btn btn-secondary">Tambah ke Wishlist</a>
             </div>
         </div>
