@@ -9,7 +9,7 @@
 <body>
     <x-navbar></x-navbar>
 
-    <div class="container p-5 border">
+    <div class="container p-5 my-3 border">
         <div class="row">
             <div class="col">
                 <h1>Author</h1>
@@ -18,7 +18,7 @@
                 <div class="position-relative">
                     <div class="position-absolute top-50 end-0 translate-bottom-y">
                         <button type="button" class="btn btn-primary">
-                            <a class="text-decoration-none text-light" href="{{ route('authors.create') }}">Create New Author</a>
+                            <a class="text-decoration-none text-light" href="{{ route('authors.create') }}">Add New Author</a>
                         </button>
                     </div>
                 </div>

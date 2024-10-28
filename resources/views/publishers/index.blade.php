@@ -9,15 +9,19 @@
 <body>
     <x-navbar></x-navbar>
 
-    <div class="container p-5 border">
+    <div class="container p-5 my-3 border">
         <div class="row">
             <div class="col">
                 <h1>Publisher</h1>
             </div>
             <div class="col">
-                <button type="button" class="btn btn-primary">
-                    <a class="text-decoration-none text-light" href="{{ route('publishers.create') }}">Add Publisher</a>
-                </button>
+                <div class="position-relative">
+                    <div class="position-absolute top-50 end-0 translate-bottom-y">
+                        <button type="button" class="btn btn-primary">
+                            <a class="text-decoration-none text-light" href="{{ route('publishers.create') }}">Add New Publisher</a>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -53,20 +57,19 @@
                     <tr>
                         <td>{{ $publisher->publisher_name }}</td>
                         <td>
-                            <div class="row">
-                                <a href="{{ route('publishers.edit', $publisher->id) }}">
-                                    <button class="btn btn-warning">Edit</button>
-                                </a>
-                            </div>
-                            <div class="row">
-                                <form action="{{ route('publishers.destroy', $publisher->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                            </div>
-                            
-
+                            <div class="grid gap-0 row-gap-3">
+                                <div class="p-2 g-col-6">
+                                    <a href="{{ route('publishers.edit', $publisher->id) }}">
+                                        <button type="button" class="btn btn-warning">Edit</button>
+                                    </a>
+                                </div>
+                                <div class="p-2 g-col-6">
+                                    <form action="{{ route('publishers.destroy', $publisher->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                </div>
                         </td>
                     </tr>
                 @endforeach

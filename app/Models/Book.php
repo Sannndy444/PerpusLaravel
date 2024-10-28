@@ -8,18 +8,18 @@ class Book extends Model
 {
     protected $fillable = ['title', 'author_id', 'category_id', 'publisher_id', 'image', 'publishedYear'];
 
-    public function authors ()
+    public function author ()
     {
-        return $this->belongsTo(Author::class, 'author_id');
+        return $this->belongsTo(Author::class);
     }
 
     public function category ()
     {
-        return $this->belongsTo(category::class, 'category_id');
+        return $this->belongsTo(Category::class);
     }
 
     public function publisher ()
     {
-        return $this->belongsTo(Publisher::class, 'publisher_id');
+        return $this->belongsTo(Publisher::class);
     }
 }

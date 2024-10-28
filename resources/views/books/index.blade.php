@@ -9,7 +9,7 @@
 <body>
     <x-navbar></x-navbar>
 
-    <div class="container p-5 border">
+    <div class="container p-5 my-3 border">
         <div class="row">
             <div class="col">
                 <h2>Books</h2>
@@ -28,14 +28,25 @@
             @foreach ($book as $book)
                 <div class="col">
                     <div class="card">
-                        @if($book->image_path)
-                            <img src="{{ Storage::url($book->image_path) }}" class="card-img-top" alt="...">
+                        @if($book->image)
+                            <img src="{{ Storage::url('books/' . $book->image) }}" class="img-card-top" alt="{{ $book->image }}">
                         @else
                             No Image
                         @endif
-
                             <div class="card-body">
                                 <h5 class="card-title">{{ $book->title }}</h5>
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="button" class="btn btn-primary">
+                                            <a class="text-decoration-none text-light" href="{{ route('books.show', $book->id) }}">View</a>
+                                        </button>
+                                        <form action="{{ route('books.destroy', $book->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                                
                             </div>
                     </div>
                 </div>

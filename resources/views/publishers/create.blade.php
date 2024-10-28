@@ -9,11 +9,23 @@
 <body>
     <x-navbar></x-navbar>
 
-    <h1>Create Publisher</h1>
-        <form action="{{ route('publishers.store') }}" method="POST">
-            @csrf
-            <input type="text" name="publisher_name" placeholder="Publisher Name">
-            <button type="submit">Submit</button>
-        </form>
+    <div class="container p-5 my-5 border">
+        <div class="row">
+            <div class="col">
+                <h1>Add Publisher</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form action="{{ route('publishers.store') }}" method="POST">
+                    @csrf
+                        <div class="input-group mb-3">
+                            <button class="btn btn-outline-success" type="submit" id="button-addon1">Create</button>
+                            <input type="text" class="form-control" placeholder="Publisher Name" name="pubisher_name" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

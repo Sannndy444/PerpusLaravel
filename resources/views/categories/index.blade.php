@@ -9,25 +9,41 @@
 <body>
     <x-navbar></x-navbar>
 
-    <h1>Category</h1>
-    <a href="{{ route('categories.create') }}">Create New Category</a>
-
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="container p-5 my-3 border">
+        <div class="row">
+            <div class="col">
+                <h1>Category</h1>
+            </div>
+            <div class="col">
+                <div class="position-relative">
+                    <div class="position-absolute top-50 end-0 translate-bottom-y">
+                        <button type="button" class="btn btn-primary">
+                            <a class="text-decoration-none text-light" href="{{ route('categories.create') }}">Add New category</a>
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
         </div>
-    @endif
+        <div class="row">
+            <div class="col">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
 
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+            </div>
         </div>
-    @endif
 
-    @foreach ($category as $category)
-        <table>
+        <table class="table table-bordered table-sm">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -35,20 +51,29 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($category as $category)
                     <tr>
                         <td>{{ $category->category_name }}</td>
                         <td>
-                                    <a href="{{ route('categories.edit', $category->id) }}">Edit</a>
-            <form action="{{ route('categories.destroy', $category->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit">Delete</button>
-            </form>
+                            <div class="grid gap-0 row-gap-3">
+                                <div class="p-2 g-col-6">
+                                    <a href="{{ route('categories.edit', $category->id) }}">
+                                        <button type="button" class="btn btn-warning">Edit</button>
+                                    </a>
+                                </div>
+                                <div class="p-2 g-col-6">
+                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                </div>
+                            </div>
                         </td>
                     </tr>
+                @endforeach
             </tbody>
         </table>
-    @endforeach
-    
+    </div>
 </body>
 </html>

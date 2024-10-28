@@ -19,10 +19,10 @@
             <div class="col">
                 <form action="{{ route('authors.store') }}" method="POST">
                     @csrf
-                <div class="input-group mb-3">
-                    <button class="btn btn-outline-success" type="submit" id="button-addon1">Create</button>
-                    <input type="text" class="form-control" placeholder="Author Name" name="author_name" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                </div>
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-success" type="submit" id="button-addon1">Create</button>
+                        <input type="text" class="form-control" placeholder="Author Name" name="author_name" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    </div>
                 </form>
             </div>
         </div>
