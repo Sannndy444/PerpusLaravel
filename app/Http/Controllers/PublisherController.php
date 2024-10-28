@@ -79,9 +79,9 @@ class PublisherController extends Controller
                                 ->with('error', 'Publisher already exist');
             }
 
-        $publisher->update(all());
+        $publisher->update($request->all());
 
-        return redirect()->route('publisers.index')
+        return redirect()->route('publishers.index')
                         ->with('seucces', 'Publisher Updated succesfully');
     }
 

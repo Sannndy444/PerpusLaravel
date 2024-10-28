@@ -6,7 +6,7 @@
                         <a href="{{ url('/') }}" class="nav-link text-light">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/book') }}" class="nav-link text-light">Book</a>
+                        <a href="{{ route('books.index') }}" class="nav-link text-light">Book</a>
                     </li>
                     <li class="nav-item">
                         <a href="{{ url('/borrow') }}" class="nav-link text-light">Borrow</a>

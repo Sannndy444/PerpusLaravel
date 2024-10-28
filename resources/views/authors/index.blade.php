@@ -9,53 +9,71 @@
 <body>
     <x-navbar></x-navbar>
 
-    <h1>Author</h1>
-    <a href="{{ route('authors.create') }}">Create New Author</a>
-
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="container p-5 border">
+        <div class="row">
+            <div class="col">
+                <h1>Author</h1>
+            </div>
+            <div class="col">
+                <div class="position-relative">
+                    <div class="position-absolute top-50 end-0 translate-bottom-y">
+                        <button type="button" class="btn btn-primary">
+                            <a class="text-decoration-none text-light" href="{{ route('authors.create') }}">Create New Author</a>
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
         </div>
-    @endif
+        <div class="row">
+            <div class="col">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
 
-    @if (session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+            </div>
         </div>
-    @endif
 
-    
-
-
-    
-
-        <h1>Author List</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($author as $author)
+        <table class="table table-bordered table-sm">
+            <thead>
                 <tr>
-                    <td>{{ $author->author_name }}</td>
-                    <td>
-                        <a href="{{ route('authors.edit', $author->id) }}">Edit</a>
-                        <form action="{{ route('authors.destroy', $author->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Delete</button>
-                        </form>
-                    </td>
+                    <th>Name</th>
+                    <th>Action</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+                @foreach ($author as $author)
+                    <tr>
+                        <td>{{ $author->author_name }}</td>
+                        <td>
+                            <div class="grid gap-0 row-gap-3">
+                                <div class="p-2 g-col-6">
+                                    <a href="{{ route('authors.edit', $author->id) }}">
+                                        <button type="button" class="btn btn-warning">Edit</button>
+                                    </a>
+                                </div>
+                                <div class="p-2 g-col-6">
+                                    <form action="{{ route('authors.destroy', $author->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

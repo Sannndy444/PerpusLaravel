@@ -32,7 +32,7 @@
             <label for="category_id">Category:</label>
             <select name="category_id" id="category_id">
                 @foreach($category as $c)
-                    <option value="{{ $c->id }}">{{ $c->name }}</option>
+                    <option value="{{ $c->id }}">{{ $c->category_name }}</option>
                 @endforeach
             </select>
             @error('category_id')

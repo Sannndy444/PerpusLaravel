@@ -15,7 +15,8 @@ class BookController extends Controller
      */
     public function index()
     {
-        $book = Book::all();
+        $book = Book::with(['author_name', 'category_name', 'publisher_name'])->get();
+
         return view('books.index', compact('book'));
     }
 
@@ -36,15 +37,15 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255|unique:books,title',
-            'author_id'=> 'required|exist:authors,id',
-            'category_id' => 'required|exist:categories,id',
-            'publisher_id' => 'required|exist:publishers,id',
+            'title' => 'required|string|max:255',
+            'author_id'=> 'required|exists:authors,id',
+            'category_id' => 'required|exists:categories,id',
+            'publisher_id' => 'required|exists:publishers,id',
             'image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'publishedYear' => 'required|string|max:255'
         ]);
 
-        $existingBook = Book::where('book_name', $request->book_name)->first();
+        $existingBook = Book::where('title', $request->title)->first();
 
             if ($existingBook) {
                 return redirect()->route('books.index')
@@ -57,7 +58,7 @@ class BookController extends Controller
                     $image->storeAs('books', $imageName, 'public');
                 }
 
-                Book:create([
+                Book::create([
                     'title' => $request->title,
                     'author_id' => $request->author_id,
                     'category_id' => $request->category_id,
@@ -68,7 +69,7 @@ class BookController extends Controller
             }
 
         return redirect()->route('books.index')
-                        ->with('success', compact('Book Added successfully'));
+                        ->with('success', 'Book Added successfully');
     }
 
     /**
@@ -93,15 +94,17 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
         $request->validate([
-            'title' => 'required|string|max:255|unique:books,title',
-            'author_id'=> 'required|exist:authors,id',
-            'category_id' => 'required|exist:categories,id',
-            'publisher_id' => 'required|exist:publishers,id',
+            'title' => 'required|string|max:255',
+            'author_id'=> 'required|exists:authors,id',
+            'category_id' => 'required|exists:categories,id',
+            'publisher_id' => 'required|exists:publishers,id',
             'image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'publishedYear' => 'required|string|max:255'
         ]);
 
-        $existingBook = Book::where('book_name', $request->book_name)->first();
+        $existingBook = Book::where('title', $request->title)
+                            ->where('id', '!=', $book->id)
+                            ->first();
             if ($existingBook) {
                 return redirect()->route('books.index')
                                 ->withInput()
@@ -138,6 +141,10 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
+        if ($book->image && file_exists(storage_path('app/public/books/' . $book->image))) {
+            unlink(storage_path('app/public/books/' . $book->image));
+        }
+
         $book->delete();
 
         return redirect()->route('books.index')
