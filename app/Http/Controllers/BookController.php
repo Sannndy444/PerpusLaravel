@@ -85,7 +85,12 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        // $book = Book::findOrFail($book);
+        $author = Author::all();
+        $category = Category::all();
+        $publisher = Publisher::all();
+
+        return view('books.edit', compact('book', 'author', 'category', 'publisher'));
     }
 
     /**
@@ -93,22 +98,24 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
+
         $request->validate([
             'title' => 'required|string|max:255',
             'author_id'=> 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
             'publisher_id' => 'required|exists:publishers,id',
-            'image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'publishedYear' => 'required|string|max:255'
         ]);
 
         $existingBook = Book::where('title', $request->title)
                             ->where('id', '!=', $book->id)
                             ->first();
+
             if ($existingBook) {
                 return redirect()->route('books.index')
                                 ->withInput()
-                                ->with('error', 'Book already exist');
+                                ->with('error', 'Failed to Edit');
             } else {
                 if ($request->hasFile('image')) {
                     if ($book->image && file_exists(storage_path('app/public/books/' . $book->image))) {

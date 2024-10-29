@@ -29,10 +29,8 @@
                 <h5>Deskripsi</h5>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.</p>
             </div>
-
             <div class="mt-4">
                 <a href="{{ route('books.edit', $book->id) }}" class="btn btn-primary">Edit Book</a>
-                <a href="#" class="btn btn-secondary">Tambah ke Wishlist</a>
             </div>
         </div>
     </div>
