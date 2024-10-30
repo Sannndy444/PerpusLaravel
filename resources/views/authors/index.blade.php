@@ -27,17 +27,19 @@
         </div>
         <div class="row">
             <div class="col">
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @if(session('success'))
+                    <div class="alert alert-success">
                         {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
 
-                @if (session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
             </div>
@@ -57,23 +59,17 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($author as $author)
+                @foreach ($authors as $author)
                     <tr>
                         <td>{{ $author->author_name }}</td>
                         <td>
-                            <div class="grid gap-0 row-gap-3">
-                                <div class="p-2 g-col-6">
-                                    <a href="{{ route('authors.edit', $author->id) }}">
-                                        <button type="button" class="btn btn-warning">Edit</button>
-                                    </a>
-                                </div>
-                                <div class="p-2 g-col-6">
-                                    <form action="{{ route('authors.destroy', $author->id) }}" method="POST">
+                            <div class="p-2 d-flex align-items-center">
+                                <form action="{{ route('authors.destroy', $author->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete author?')" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
-                                </div>
+                                <a href="{{ route('authors.edit', $author->id) }}" class="btn btn-primary ms-2">Edit</a>
                             </div>
                         </td>
                     </tr>

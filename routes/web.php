@@ -7,6 +7,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TypesController;
 
 
 Route::middleware('auth')->group(function () {
@@ -18,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('publishers', PublisherController::class);
     Route::resource('books', BookController::class);
+    Route::resource('types', TypesController::class);
 
 });
 

@@ -26,19 +26,21 @@
         </div>
 
         <div class="row">
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
+            @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
         </div>
         
         <div class="row">
@@ -55,7 +57,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($publisher as $publisher)
+                @foreach ($publishers as $publisher)
                     <tr>
                         <td>{{ $publisher->publisher_name }}</td>
                         <td>
@@ -66,7 +68,7 @@
                                     </a>
                                 </div>
                                 <div class="p-2 g-col-6">
-                                    <form action="{{ route('publishers.destroy', $publisher->id) }}" method="POST">
+                                    <form action="{{ route('publishers.destroy', $publisher->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete publisher?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>

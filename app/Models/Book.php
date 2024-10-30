@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
-    protected $fillable = ['title', 'author_id', 'category_id', 'publisher_id', 'image', 'publishedYear'];
+    protected $fillable = ['title', 'author_id', 'category_id', 'publisher_id', 'image', 'publishedYear', 'type_id'];
 
     public function author ()
     {
@@ -21,5 +21,10 @@ class Book extends Model
     public function publisher ()
     {
         return $this->belongsTo(Publisher::class);
+    }
+
+    public function type ()
+    {
+        return $this->belongsTo(Types::class);
     }
 }

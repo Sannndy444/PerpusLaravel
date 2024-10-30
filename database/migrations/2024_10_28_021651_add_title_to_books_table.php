@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('books', function (Blueprint $table) {
-            $table->string('title')->after('id'); // Sesuaikan posisi jika perlu
-        });
+        // Schema::table('books', function (Blueprint $table) {
+        //     $table->string('title')->after('id'); // Sesuaikan posisi jika perlu
+        // });
     }
 
     public function down()
     {
-        Schema::table('books', function (Blueprint $table) {
-            $table->dropColumn('title');
-        });
+        // Schema::table('books', function (Blueprint $table) {
+        //     $table->dropColumn('title');
+        // });
     }
 };

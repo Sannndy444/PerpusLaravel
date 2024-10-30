@@ -15,13 +15,18 @@
                 <h1>Add Publisher</h1>
             </div>
         </div>
+        <div class="r">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <form action="{{ route('publishers.store') }}" method="POST">
                     @csrf
                         <div class="input-group mb-3">
-                            <button class="btn btn-outline-success" type="submit" id="button-addon1">Create</button>
-                            <input type="text" class="form-control" placeholder="Publisher Name" name="pubisher_name" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                            <button class="btn btn-outline-success" type="submit" id="button-addon1">Add</button>
+                            <input type="text" class="form-control" placeholder="Publisher Name" name="publisher_name" aria-label="Example text with button addon" aria-describedby="button-addon1">
                         </div>
                 </form>
             </div>

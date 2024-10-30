@@ -7,6 +7,7 @@ use App\Models\Author;
 use App\Models\Category;
 use App\Models\Publisher;
 use App\Models\Book;
+use App\Models\Types;
 
 class BookController extends Controller
 {
@@ -15,7 +16,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $book = Book::with(['author', 'category', 'publisher'])->get();
+        $book = Book::with(['author', 'category', 'publisher', 'type'])->get();
 
         return view('books.index', compact('book'));
     }
@@ -28,7 +29,8 @@ class BookController extends Controller
         $author = Author::all();
         $category = Category::all();
         $publisher = Publisher::all();
-        return view('books.create', compact('author', 'category', 'publisher'));
+        $type = Types::all();
+        return view('books.create', compact('author', 'category', 'publisher', 'type'));
     }
 
     /**
@@ -41,6 +43,7 @@ class BookController extends Controller
             'author_id'=> 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
             'publisher_id' => 'required|exists:publishers,id',
+            'type_id' => 'required|exists:types,id',
             'image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
             'publishedYear' => 'required|string|max:255'
         ]);
@@ -63,6 +66,7 @@ class BookController extends Controller
                     'author_id' => $request->author_id,
                     'category_id' => $request->category_id,
                     'publisher_id' => $request->publisher_id,
+                    'type_id' => $request->type_id,
                     'image' => $imageName,
                     'publishedYear' => $request->publishedYear,
                 ]);
@@ -89,8 +93,9 @@ class BookController extends Controller
         $author = Author::all();
         $category = Category::all();
         $publisher = Publisher::all();
+        $type = Types::all();
 
-        return view('books.edit', compact('book', 'author', 'category', 'publisher'));
+        return view('books.edit', compact('book', 'author', 'category', 'publisher', 'type'));
     }
 
     /**
@@ -104,6 +109,7 @@ class BookController extends Controller
             'author_id'=> 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
             'publisher_id' => 'required|exists:publishers,id',
+            'type_id' => 'required|exists:types,id',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'publishedYear' => 'required|string|max:255'
         ]);
@@ -134,6 +140,7 @@ class BookController extends Controller
                     'author_id' => $request->author_id,
                     'category_id' => $request->category_id,
                     'publisher_id' => $request->publisher_id,
+                    'type_id' => $request->type_id,
                     'image' => $imageName,
                     'publishedYear' => $request->publishedYear,
                 ]);

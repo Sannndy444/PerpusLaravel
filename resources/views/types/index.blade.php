@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Category</title>
+    <title>Type</title>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
@@ -12,22 +12,20 @@
     <div class="container p-5 my-3 border">
         <div class="row">
             <div class="col">
-                <h1>Category</h1>
+                <h1>Type</h1>
             </div>
             <div class="col">
                 <div class="position-relative">
                     <div class="position-absolute top-50 end-0 translate-bottom-y">
                         <button type="button" class="btn btn-primary">
-                            <a class="text-decoration-none text-light" href="{{ route('categories.create') }}">Add New category</a>
+                            <a class="text-decoration-none text-light" href="{{ route('types.create') }}">Add New Type</a>
                         </button>
                     </div>
                 </div>
-                
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                @if(session('success'))
+            @if(session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}
                     </div>
@@ -42,34 +40,38 @@
                         </ul>
                     </div>
                 @endif
-            </div>
         </div>
-
         <div class="row">
             <div class="col">
                 <hr>
             </div>
         </div>
-
+        
         <table class="table table-bordered table-sm">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Action</th>
+                    <td>Name</td>
+                    <td>Action</td>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($categories as $category)
+                @foreach ($type as $t)
                     <tr>
-                        <td>{{ $category->category_name }}</td>
+                        <td>{{ $t->type_name }}</td>
                         <td>
-                            <div class="p-2 d-flex align-items-center">
-                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete category?')" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                                <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-primary ms-2">Edit</a>
+                            <div class="grid gap-0 row-gap-3">
+                                <div class="p-2 g-col-6">
+                                    <a href="{{ route('types.edit', $t->id) }}">
+                                        <button type="button" class="btn btn-warning">Edit</button>
+                                    </a>
+                                </div>
+                                <div class="p-2 g-col-6">
+                                    <form action="{{ route('types.destroy', $t->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete type?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
                             </div>
                         </td>
                     </tr>

@@ -58,7 +58,29 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title">{{ $book->title }}</h5>  
+                                        <h5 class="text-center">{{ $book->title }}</h5>  
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="card-author">{{ $book->Author->author_name }}</p>  
+                                    </div>
+                                    <div class="col">
+                                        <p class="text-center">|</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="text-center">{{ $book->publishedYear }}</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="text-center">|</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="text-center">{{ $book->Category->category_name }}</p>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -72,7 +94,7 @@
                                             <a class="text-decoration-none text-light" href="{{ route('books.show', $book->id) }}">View</a>
                                         </button>
 
-                                        <form action="{{ route('books.destroy', $book->id) }}" method="POST">
+                                        <form action="{{ route('books.destroy', $book->id) }}" method="POST" onsubmit="return confirm('Are sure to delete the book?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Delete</button>

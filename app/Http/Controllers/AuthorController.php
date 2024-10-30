@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Author;
+use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AuthorController extends Controller
 {
@@ -12,8 +14,8 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $author = Author::all();
-        return view('authors.index', compact('author'));
+        $authors = Author::all();
+        return view('authors.index', compact('authors'));
     }
 
     /**
@@ -24,22 +26,25 @@ class AuthorController extends Controller
         return view('authors.create');
     }
 
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'author_name' => 'required|string|max:255'
+        $validator = Validator::make($request->all(), [
+            'author_name' => 'required|string|max:255|unique:authors,author_name',
+        ], [
+            'author_name.required' => 'Author Name Is Required',
+            'author_name.unique' => 'Author Name Already Exist'
         ]);
+                if ($validator->fails()) {
+                    $errors = $validator->errors();
+                    return redirect()->route('authors.index')
+                                    ->withErrors($validator)
+                                    ->withInput();
+                }
 
-        $existingAuthor = Author::where('author_name', $request->author_name)->first();
-
-            if ($existingAuthor) {
-                return redirect()->route('authors.index')
-                                ->withInput()
-                                ->with('error', 'Author already exists.');
-            }
 
         Author::create($request->all());
 
@@ -52,7 +57,7 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        return view('authors.show', compact('author'));
+        return view('authors.show', compact('authors'));
     }
 
     /**
@@ -60,7 +65,7 @@ class AuthorController extends Controller
      */
     public function edit(Author $author)
     {
-        return view('authors.edit', compact('author'));
+        return view('authors.edit', compact('authors'));
     }
 
     /**
@@ -68,19 +73,18 @@ class AuthorController extends Controller
      */
     public function update(Request $request, Author $author)
     {
-        $request->validate([
-            'author_name' => 'required|string|max:255'
+        $validator = Validator::make($request->all(), [
+            'author_name' => 'required|string|max:255|unique:authors,author_name',
+        ], [
+            'author_name.required' => 'Author Name Is Required',
+            'author_name.unique' => 'Author Name Already Exist'
         ]);
-
-        // Cek apakah data yang sama sudah ada
-        $existingAuthor = Author::where('author_name', $request->author_name)->first();
-
-            if ($existingAuthor) {
-                // Jika duplikat ditemukan, kembalikan dengan pesan error
-                return redirect()->route('authors.index')
-                                ->withInput()
-                                ->with('error', 'Author already exists.');
-            }
+                if ($validator->fails()) {
+                    $errors = $validator->errors();
+                    return redirect()->route('authors.index')
+                                    ->withErrors($validator)
+                                    ->withInput();
+                }
 
         $author->update($request->all());
 
@@ -93,9 +97,16 @@ class AuthorController extends Controller
      */
     public function destroy(Author $author)
     {
-        $author->delete();
+        if ($author) {
+            if ($author->books()->count() > 0) { // Menggunakan books() dengan huruf kecil
+                return redirect()->route('authors.index')
+                                ->withErrors('Tidak bisa menghapus data ini karena masih terhubung dengan buku.');
+            }
 
-        return redirect()->route('authors.index')
-                        ->with('success', 'Author Deleted successfully');
+            $author->delete();
+            return redirect()->route('authors.index')->with('success', 'Author deleted successfully');
+        }
+
+        return redirect()->route('authors.index')->withErrors('Penulis tidak ditemukan.');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -12,8 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = Category::all();
-        return view('categories.index', compact('category'));
+        $categories = Category::all();
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -29,16 +30,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'category_name' => 'required|string|max:255'
+        $validator = Validator::make($request->all(), [
+            'category_name' => 'required|string|max:255|unique:categories,category_name',
+        ], [
+            'category_name' => 'Category Name Is Required',
+            'category_name' => 'Category Name Already Exist'
         ]);
-
-        $existingCategory = Category::where('category_name', $request->category_name)->first();
-            if ($existingCategory) {
-                return redirect()->route('categories.index')
-                                ->withInput()
-                                ->with('error', 'Category already exist');
-            }
+                if ($validator->fails()) {
+                    $errors = $validator->errors();
+                    return redirect()->route('categories.index')
+                                    ->withErrors($validator)
+                                    ->withInput();
+                }
 
         Category::create($request->all());
 
@@ -51,7 +54,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('categories.show', compact('category'));
+        return view('categories.show', compact('categories'));
     }
 
     /**
@@ -59,7 +62,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('categories.edit', compact('category'));
+        return view('categories.edit', compact('categories'));
     }
 
     /**
@@ -67,16 +70,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $request->validate([
-            'category_name' => 'required|string|max:255'
+        $validator = Validator::make($request->all(), [
+            'category_name' => 'required|string|max:255|unique:categories,category_name',
+        ], [
+            'category_name' => 'Author Name Is Required',
+            'category_name' => 'Author Name Already Exist'
         ]);
-
-        $existingCategory = Category::where('category_name', $request->category_name)->first();
-            if ($existingCategory) {
-                return redirect()->route('categories.index')
-                                ->withInput()
-                                ->with('error', 'Category already exist');
-            }
+                if ($validator->fails()) {
+                    $errors = $validator->errors();
+                    return redirect()->route('categories.index')
+                                    ->withErrors($validator)
+                                    ->withInput();
+                }
 
         $category->update($request->all());
 
@@ -89,9 +94,17 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
+        if ($category) {
+            if ($category->count() > 0) {
+                return redirect()->route('categories.index')
+                                ->withErrors('Tidak bisa menghapus data ini karena masih terhubung dengan buku.');
+            }
 
-        return redirect()->route('categories.index')
-                        ->with('success', 'Category Deleted succesfully');
+            $category->delete();
+            return redirect()->route('categories.index')
+                            ->with('success', 'Category deleted successfully');
+        }
+
+        return redirect()->route('categories.index')->withErrors('Category tidak ditemukan.');
     }
 }

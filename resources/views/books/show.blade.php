@@ -24,6 +24,7 @@
             <p class="text-muted">Publisher         : <strong>{{ $book->Publisher->publisher_name }}</strong></p>
             <p class="text-muted">Published Year    : <strong>{{ $book->publishedYear }}</strong></p>
             <p class="text-muted">Category          : <strong>{{ $book->Category->category_name }}</strong></p>
+            <p class="text-muted">Type          : <strong>{{ $book->Type->type_name }}</strong></p>
             
             <div class="mt-4">
                 <h5>Deskripsi</h5>

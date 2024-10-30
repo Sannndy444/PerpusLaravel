@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Publisher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PublisherController extends Controller
 {
@@ -12,8 +13,8 @@ class PublisherController extends Controller
      */
     public function index()
     {
-        $publisher = Publisher::all();
-        return view('publishers.index', compact('publisher'));
+        $publishers = Publisher::all();
+        return view('publishers.index', compact('publishers'));
     }
 
     /**
@@ -29,17 +30,18 @@ class PublisherController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'publisher_name' => 'required|string|max:255'
-
+        $validator = Validator::make($request->all(), [
+            'publisher_name' => 'required|string|max:255|unique:publishers,publisher_name',
+        ], [
+            'publisher_name.required' => 'Publisher Name Is Required',
+            'publisher_name.unique' => 'Publisher Name Already Exist'
         ]);
-
-        $existingPublisher = Publisher::where('publisher_name', $request->publisher_name)->first();
-            if ($existingPublisher) {
-                return redirect()->route('publishers.index')
-                                ->withInput()
-                                ->with('error', 'Publisher already exist');
-            }
+                if ($validator->fails()) {
+                    $errors = $validator->errors();
+                    return redirect()->route('publishers.index')
+                                    ->withErrors($validator)
+                                    ->withInput();
+                }
 
         Publisher::create($request->all());
 
@@ -68,21 +70,24 @@ class PublisherController extends Controller
      */
     public function update(Request $request, Publisher $publisher)
     {
-        $request->validate([
-            'publisher_name' => 'required|string|max:255'
+        $validator = Validator::make($request->all(), [
+            'publisher_name' => 'required|string|max:255|unique:publishers,publisher_name',
+        ], [
+            'publisher_name.required' => 'Publisher Name Is Required',
+            'publisher_name.unique' => 'Publisher Name Already Exist'
         ]);
+                if ($validator->fails()) {
+                    $errors = $validator->errors();
+                    return redirect()->route('publishers.index')
+                                    ->withErrors($validator)
+                                    ->withInput();
+                }
 
-        $existingPublisher = Publisher::where('publisher_name', $request->publisher_name)->first();
-            if ($existingPublisher) {
-                return redirect()->route('publishers.index')
-                                ->withInput()
-                                ->with('error', 'Publisher already exist');
-            }
 
         $publisher->update($request->all());
 
         return redirect()->route('publishers.index')
-                        ->with('seucces', 'Publisher Updated succesfully');
+                        ->with('success', 'Publisher Updated succesfully');
     }
 
     /**
@@ -90,9 +95,17 @@ class PublisherController extends Controller
      */
     public function destroy(Publisher $publisher)
     {
-        $publisher->delete();
+        if ($publisher) {
+            if ($publisher->count() > 0) {
+                return redirect()->route('publishers.index')
+                                ->withErrors('Tidak bisa menghapus data ini karena masih terhubung dengan buku.');
+            }
 
-        return redirect()->route('publisers.index')
-                        ->with('success', 'Publisher Deleted successfully');
+            $publisher->delete();
+            return redirect()->route('publishers.index')
+                            ->with('success', 'Publisher deleted successfully');
+        }
+
+        return redirect()->route('publisher.index')->withErrors('Publisher tidak ditemukan.');
     }
 }

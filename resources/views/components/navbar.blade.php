@@ -19,6 +19,7 @@
                                 <li><a class="dropdown-item" href="{{ route('authors.index') }}">Author</a></li>
                                 <li><a class="dropdown-item" href="{{ route('categories.index') }}">Category</a></li>
                                 <li><a class="dropdown-item" href="{{ route('publishers.index') }}">Publisher</a></li>
+                                <li><a class="dropdown-item" href="{{ route('types.index') }}">Type</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -33,10 +34,10 @@
                             </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;" onsubmit="return confirm('Are you sure to Log out?')">
                                 @csrf
                             </form>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); confirmLogout();">
                                 Logout
                             </a>
                         </li>
@@ -45,3 +46,10 @@
             </ul>
         </div>
     </nav>
+    <script>
+        function confirmLogout() {
+            if (confirm('Are you sure you want to log out?')) {
+                document.getElementById('logout-form').submit();
+            }
+        }
+    </script>

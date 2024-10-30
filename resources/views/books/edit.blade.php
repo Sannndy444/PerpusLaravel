@@ -66,6 +66,18 @@
                     </div>
 
                     <div class="input-group mb-3">
+                        <select class="form-select" aria-label="Default select example" name="type_id" id="type_id">
+                            <option selected>Choose Type Book</option>
+                                @foreach($type as $t)
+                                    <option value="{{ $t->id }}" {{ $book->type_id == $t->id ? 'selected' : '' }}>{{ $t->type_name }}</option>
+                                @endforeach
+                        </select>
+                        @error('type_id')
+                            <div>{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="input-group mb-3">
                         <label for="formFile" class="form-control" id="fileLabel">
                             @if(isset($book->image))
                                 ({{ $book->image }})

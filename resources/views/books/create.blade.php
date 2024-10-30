@@ -65,6 +65,18 @@
                     </div>
 
                     <div class="input-group mb-3">
+                        <select class="form-select" aria-label="Default select example" name="type_id" id="type_id">
+                            <option selected>Choose Types Book</option>
+                                @foreach($type as $t)
+                                    <option value="{{ $t->id }}">{{ $t->type_name }}</option>
+                                @endforeach
+                        </select>
+                        @error('type_id')
+                            <div>{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="input-group mb-3">
                         <label for="formFile" class="form-control" id="fileLabel">Add Book Cover</label>
                         <input class="form-control" type="file" id="formFile" placeholder="Add Book Cover" name="image">
                     </div>
