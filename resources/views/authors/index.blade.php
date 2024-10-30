@@ -43,6 +43,12 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col">
+                <hr>
+            </div>
+        </div>
+
         <table class="table table-bordered table-sm">
             <thead>
                 <tr>

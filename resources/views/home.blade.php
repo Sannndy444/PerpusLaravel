@@ -9,4 +9,10 @@
 </head>
 <body>
     <x-navbar></x-navbar>
+
+    <div class="container p-5 my-3">
+        <h2>
+            Hola MF
+        </h2>
+    </div>
 </html>
