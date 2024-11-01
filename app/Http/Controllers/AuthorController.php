@@ -57,7 +57,7 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        return view('authors.show', compact('authors'));
+        return view('authors.show', compact('author'));
     }
 
     /**
@@ -65,7 +65,7 @@ class AuthorController extends Controller
      */
     public function edit(Author $author)
     {
-        return view('authors.edit', compact('authors'));
+        return view('authors.edit', compact('author'));
     }
 
     /**

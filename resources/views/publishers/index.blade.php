@@ -62,18 +62,14 @@
                         <td>{{ $publisher->publisher_name }}</td>
                         <td>
                             <div class="grid gap-0 row-gap-3">
-                                <div class="p-2 g-col-6">
-                                    <a href="{{ route('publishers.edit', $publisher->id) }}">
-                                        <button type="button" class="btn btn-warning">Edit</button>
-                                    </a>
-                                </div>
-                                <div class="p-2 g-col-6">
-                                    <form action="{{ route('publishers.destroy', $publisher->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete publisher?')">
+                                <div class="p-2 d-flex align-items-center">
+                                <form action="{{ route('publishers.destroy', $publisher->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete author?')" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
-                                </div>
+                                <a href="{{ route('publishers.edit', $publisher->id) }}" class="btn btn-primary ms-2">Edit</a>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

@@ -60,17 +60,13 @@
                         <td>{{ $t->type_name }}</td>
                         <td>
                             <div class="grid gap-0 row-gap-3">
-                                <div class="p-2 g-col-6">
-                                    <a href="{{ route('types.edit', $t->id) }}">
-                                        <button type="button" class="btn btn-warning">Edit</button>
-                                    </a>
-                                </div>
-                                <div class="p-2 g-col-6">
-                                    <form action="{{ route('types.destroy', $t->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete type?')">
+                                <div class="p-2 d-flex align-items-center">
+                                    <form action="{{ route('types.destroy', $t->id) }}" method="POST" onsubmit="return confirm('Are you sure to delete author?')" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                            <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
+                                    <a href="{{ route('types.edit', $t->id) }}" class="btn btn-primary ms-2">Edit</a>
                                 </div>
                             </div>
                         </td>

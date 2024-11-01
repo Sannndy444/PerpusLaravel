@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Publisher;
 use App\Models\Book;
 use App\Models\Types;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -38,39 +39,28 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'author_id'=> 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
             'publisher_id' => 'required|exists:publishers,id',
             'type_id' => 'required|exists:types,id',
-            'image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+            'image' => 'required|image|mimes:jpg,png,jpeg|max:2048|unique:books,image',
             'publishedYear' => 'required|string|max:255'
+        ], [
+            'image.required' => 'Image Cover Book Is Required',
+            'image.mimes' => 'File Is Not Support',
+            'image.max' => 'Size File Not Support',
+            'image.unique' => 'Book Cover Image Already Use'
         ]);
-
-        $existingBook = Book::where('title', $request->title)->first();
-
-            if ($existingBook) {
+            if($validator->fails()) {
+                $errors = $validator->errors();
                 return redirect()->route('books.index')
-                                ->withInput()
-                                ->with('error', 'Book already exist');
-            } else {
-                if ($request->hasFile('image')) {
-                    $image = $request->file('image');
-                    $imageName = time() . '.' . $image->extension();
-                    $image->storeAs('books', $imageName, 'public');
-                }
-
-                Book::create([
-                    'title' => $request->title,
-                    'author_id' => $request->author_id,
-                    'category_id' => $request->category_id,
-                    'publisher_id' => $request->publisher_id,
-                    'type_id' => $request->type_id,
-                    'image' => $imageName,
-                    'publishedYear' => $request->publishedYear,
-                ]);
+                                ->withErrors($validator)
+                                ->withInput();
             }
+
+            Book::create($request->all());
 
         return redirect()->route('books.index')
                         ->with('success', 'Book Added successfully');
